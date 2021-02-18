@@ -1,0 +1,536 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>Tweets</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html"> </a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Coronavirus Vaccine</a>
+</li>
+<li>
+  <a href="tweets.html">Tweets</a>
+</li>
+<li>
+  <a href="videos.html">Videos</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Tweets</h1>
+
+</div>
+
+
+<p><br></p>
+<div id="support-for-vaccine-hindi" class="section level1">
+<h1>Support for vaccine – Hindi</h1>
+</div>
+<div id="वैक्सीन-के-लिए-समर्थन" class="section level1">
+<h1>(वैक्सीन के लिए समर्थन)</h1>
+<p><br></p>
+<blockquote class="twitter-tweet">
+<p lang="hi" dir="ltr">
+<p>जब तक <a href="https://twitter.com/hashtag/%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A5%8D%E0%A4%B8%E0%A5%80%E0%A4%A8?src=hash&amp;ref_src=twsrc%5Etfw">#वैक्सीन</a> नहीं, तब तक केवल सही तरीके से पहना मास्क ही वैक्सीन है।<a href="https://twitter.com/hashtag/WearProperMask?src=hash&amp;ref_src=twsrc%5Etfw">#WearProperMask</a> 😷<a href="https://twitter.com/hashtag/COVID19?src=hash&amp;ref_src=twsrc%5Etfw">#COVID19</a><a href="https://twitter.com/hashtag/vaccine?src=hash&amp;ref_src=twsrc%5Etfw">#vaccine</a><a href="https://twitter.com/hashtag/thursdaymorning?src=hash&amp;ref_src=twsrc%5Etfw">#thursdaymorning</a><a href="https://twitter.com/COVIDNewsByMIB?ref_src=twsrc%5Etfw"><span class="citation">@COVIDNewsByMIB</span></a> <a href="https://twitter.com/IEC_Rajasthan?ref_src=twsrc%5Etfw"><span class="citation">@IEC_Rajasthan</span></a> <a href="https://twitter.com/DIPRRajasthan?ref_src=twsrc%5Etfw"><span class="citation">@DIPRRajasthan</span></a> <a href="https://t.co/0kwHxKbc2a">pic.twitter.com/0kwHxKbc2a</a></p>
+</p>
+<p>— Rajasthan Police (<span class="citation">@PoliceRajasthan</span>) <a href="https://twitter.com/PoliceRajasthan/status/1357205794916364296?ref_src=twsrc%5Etfw">February 4, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="hi" dir="ltr">
+<p><a href="https://twitter.com/hashtag/%E0%A4%95%E0%A5%8B%E0%A4%B0%E0%A5%8B%E0%A4%A8%E0%A4%BE%E0%A4%95%E0%A4%BE%E0%A4%B2?src=hash&amp;ref_src=twsrc%5Etfw">#कोरोनाकाल</a> में देश ने अंत्योदय की भावना को सामने रखा, और अंतिम पायदान पर खड़े हर गरीब की चिंता की।<a href="https://twitter.com/hashtag/%E0%A4%86%E0%A4%A4%E0%A5%8D%E0%A4%AE%E0%A4%A8%E0%A4%BF%E0%A4%B0%E0%A5%8D%E0%A4%AD%E0%A4%B0%E0%A4%A4%E0%A4%BE?src=hash&amp;ref_src=twsrc%5Etfw">#आत्मनिर्भरता</a> की शक्ति से देश ने एकात्म मानव दर्शन को भी सिद्ध किया, पूरी दुनिया को दवाएं पहुंचाईं, और आज <a href="https://twitter.com/hashtag/%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A5%8D%E0%A4%B8%E0%A5%80%E0%A4%A8?src=hash&amp;ref_src=twsrc%5Etfw">#वैक्सीन</a> पहुंचा रहा है- <a href="https://twitter.com/narendramodi?ref_src=twsrc%5Etfw"><span class="citation">@narendramodi</span></a> <a href="https://twitter.com/hashtag/SamarpanDiwas?src=hash&amp;ref_src=twsrc%5Etfw">#SamarpanDiwas</a> <a href="https://twitter.com/PIB_Patna?ref_src=twsrc%5Etfw"><span class="citation">@PIB_Patna</span></a> <a href="https://twitter.com/ROB_Patna?ref_src=twsrc%5Etfw"><span class="citation">@ROB_Patna</span></a> <a href="https://t.co/sGmX9VYGrS">pic.twitter.com/sGmX9VYGrS</a></p>
+</p>
+<p>— DD News Bihar (<span class="citation">@ddnewsBihar</span>) <a href="https://twitter.com/ddnewsBihar/status/1359813480379916288?ref_src=twsrc%5Etfw">February 11, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="hi" dir="ltr">
+<p>सीरम इंस्टीट्यूट ऑफ इंडिया (<a href="https://twitter.com/hashtag/%E0%A4%8F%E0%A4%B8%E0%A4%86%E0%A4%88%E0%A4%86%E0%A4%88?src=hash&amp;ref_src=twsrc%5Etfw">#एसआईआई</a>) द्वारा भेजे गए <a href="https://twitter.com/hashtag/%E0%A4%91%E0%A4%95%E0%A5%8D%E0%A4%B8%E0%A4%AB%E0%A5%8B%E0%A4%B0%E0%A5%8D%E0%A4%A1%E0%A4%8F%E0%A4%B8%E0%A5%8D%E0%A4%9F%E0%A5%8D%E0%A4%B0%E0%A4%BE%E0%A4%9C%E0%A5%87%E0%A4%A8%E0%A5%87%E0%A4%95%E0%A4%BE?src=hash&amp;ref_src=twsrc%5Etfw">#ऑक्सफोर्डएस्ट्राजेनेका</a> <a href="https://twitter.com/hashtag/%E0%A4%95%E0%A5%8B%E0%A4%B5%E0%A4%BF%E0%A4%A1%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A5%8D%E0%A4%B8%E0%A5%80%E0%A4%A8?src=hash&amp;ref_src=twsrc%5Etfw">#कोविडवैक्सीन</a> से रविवार को पूरे <a href="https://twitter.com/hashtag/%E0%A4%AC%E0%A4%BE%E0%A4%82%E0%A4%97%E0%A5%8D%E0%A4%B2%E0%A4%BE%E0%A4%A6%E0%A5%87%E0%A4%B6?src=hash&amp;ref_src=twsrc%5Etfw">#बांग्लादेश</a> में टीकाकरण शुरू हुआ। भारत से बांग्लादेश को 20 लाख <a href="https://twitter.com/hashtag/%E0%A4%B5%E0%A5%88%E0%A4%95%E0%A5%8D%E0%A4%B8%E0%A5%80%E0%A4%A8?src=hash&amp;ref_src=twsrc%5Etfw">#वैक्सीन</a> उपहार में भेजे गए हैं। <a href="https://t.co/VUa8uX9B5d">pic.twitter.com/VUa8uX9B5d</a></p>
+</p>
+<p>— IANS Hindi (<span class="citation">@IANSKhabar</span>) <a href="https://twitter.com/IANSKhabar/status/1358337214065778690?ref_src=twsrc%5Etfw">February 7, 2021</a></p>
+</blockquote>
+<blockquote class="twitter-tweet">
+<p lang="hi" dir="ltr">
+देश के हर ज़िले में ड्राई रन पूरे हो चुके हैं…दूसरे चरण में 50 साल से ज़्यादा उम्र वालों को वैक्सीन : <a href="https://twitter.com/hashtag/PMModi?src=hash&amp;ref_src=twsrc%5Etfw">#PMModi</a>
+</p>
+— Deepak Chaurasia (<span class="citation">@DChaurasia2312</span>) <a href="https://twitter.com/DChaurasia2312/status/1348598393094901762?ref_src=twsrc%5Etfw">January 11, 2021</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="hi" dir="ltr">
+भारत के वैज्ञानिकों ने एक नही, दो-दो मेड इन इंडिया कोविड वैक्सीन विकसित करने में सफलता पाई है।<br><br>देश में दुनिया का सबसे बड़ा वैक्सीन प्रोग्राम शुरु होने जा रहा है। <br><br>देश को अपने वैज्ञानिकों पर गर्व है, हर देशवासी सभी वैज्ञानिकों, टैक्निशियनों का कृतज्ञ है।<br><br>- पीएम <a href="https://twitter.com/narendramodi?ref_src=twsrc%5Etfw"><span class="citation">@narendramodi</span></a>
+</p>
+— Deepak Chaurasia (<span class="citation">@DChaurasia2312</span>) <a href="https://twitter.com/DChaurasia2312/status/1346007164133941248?ref_src=twsrc%5Etfw">January 4, 2021</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="hi" dir="ltr">
+भारत, मानवता की सेवा हेतु सदैव तत्पर रहने वाला देश है। स्वप्रेरणा से अनेक राष्ट्रों को ‘कोरोना वैक्सीन’ उपलब्ध कराना उस भावना का प्रत्यक्ष उदाहरण है।<br><br>‘भारत विरोधी प्रोपेगेंडा’ चला रहे लोग अपने उद्देश्यों में असफल होंगे। विश्व जनमत भारत के साथ खड़ा है।<a href="https://twitter.com/hashtag/IndiaAgainstPropaganda?src=hash&amp;ref_src=twsrc%5Etfw">#IndiaAgainstPropaganda</a>
+</p>
+— Yogi Adityanath (<span class="citation">@myogiadityanath</span>) <a href="https://twitter.com/myogiadityanath/status/1356930024373379074?ref_src=twsrc%5Etfw">February 3, 2021</a>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<p><br></p>
+</div>
+<div id="support-for-vaccine-english" class="section level1">
+<h1>Support for vaccine – English</h1>
+</div>
+<div id="वैक्सीन-के-लिए-समर्थन-1" class="section level1">
+<h1>(वैक्सीन के लिए समर्थन)</h1>
+<p><br></p>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>🎙️We stand by <a href="https://twitter.com/hashtag/COVID?src=hash&amp;ref_src=twsrc%5Etfw">#COVID</a>-19 vaccines🎙️<a href="https://twitter.com/hashtag/COVID?src=hash&amp;ref_src=twsrc%5Etfw">#COVID</a>-19 vaccine is completely safe and effective.<br>Don’t forget to get vaccinated on your turn.<a href="https://twitter.com/hashtag/LargestVaccineDrive?src=hash&amp;ref_src=twsrc%5Etfw">#LargestVaccineDrive</a><a href="https://twitter.com/hashtag/IndiaFightsCorona?src=hash&amp;ref_src=twsrc%5Etfw">#IndiaFightsCorona</a> <a href="https://t.co/d4nXO5PLm7">pic.twitter.com/d4nXO5PLm7</a></p>
+</p>
+<p>— Ministry of Education (<span class="citation">@EduMinOfIndia</span>) <a href="https://twitter.com/EduMinOfIndia/status/1359790155272511490?ref_src=twsrc%5Etfw">February 11, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>COVID-19 Testing Update. For more details visit: <a href="https://t.co/FQhg5Mn8Qn">https://t.co/FQhg5Mn8Qn</a> <a href="https://twitter.com/MoHFW_INDIA?ref_src=twsrc%5Etfw"><span class="citation">@MoHFW_INDIA</span></a> <a href="https://twitter.com/DeptHealthRes?ref_src=twsrc%5Etfw"><span class="citation">@DeptHealthRes</span></a><br> <a href="https://twitter.com/hashtag/ICMRFIGHTSCOVID19?src=hash&amp;ref_src=twsrc%5Etfw">#ICMRFIGHTSCOVID19</a> <a href="https://twitter.com/hashtag/IndiaFightsCOVID19?src=hash&amp;ref_src=twsrc%5Etfw">#IndiaFightsCOVID19</a> <a href="https://twitter.com/hashtag/CoronaUpdatesInIndia?src=hash&amp;ref_src=twsrc%5Etfw">#CoronaUpdatesInIndia</a> <a href="https://twitter.com/hashtag/COVID19?src=hash&amp;ref_src=twsrc%5Etfw">#COVID19</a> <a href="https://twitter.com/hashtag/Unite2FightCorona?src=hash&amp;ref_src=twsrc%5Etfw">#Unite2FightCorona</a> <a href="https://t.co/lQywUv1LmM">pic.twitter.com/lQywUv1LmM</a></p>
+</p>
+<p>— ICMR (<span class="citation">@ICMRDELHI</span>) <a href="https://twitter.com/ICMRDELHI/status/1359718800548061192?ref_src=twsrc%5Etfw">February 11, 2021</a></p>
+</blockquote>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>India has seen days when there was a large threat of polio, small pox. Nobody knew whether India will get a vaccine or how many people will get it. <br><br>From those days, we are now here- when our nation is making vaccines for the world. This increases our self-confidence: PM</p>
+</p>
+<p>— PMO India (<span class="citation">@PMOIndia</span>) <a href="https://twitter.com/PMOIndia/status/1358646273138638850?ref_src=twsrc%5Etfw">February 8, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>On Pulse Polio Day 2020, gave vaccine to children in Hubli, Karnataka.<br><br>Modi government is committed towards a healthy and bright future of every child.<br><br>I urge all parents to not compromise with their child’s health and ensure their vaccination on time. <a href="https://t.co/IZV6GxJosL">pic.twitter.com/IZV6GxJosL</a></p>
+</p>
+<p>— Amit Shah (<span class="citation">@AmitShah</span>) <a href="https://twitter.com/AmitShah/status/1218846460390719494?ref_src=twsrc%5Etfw">January 19, 2020</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p><a href="https://twitter.com/hashtag/CoronaVirusUpdates?src=hash&amp;ref_src=twsrc%5Etfw">#CoronaVirusUpdates</a> <br><br>🔷 India’s Daily new Cases continue to show steady decline; Recoveries on an upward streak<br><br>🔶 55% Decline in Average Daily Deaths in the last one month<br><br>🔷 62.6 lakh beneficiaries vaccinated against <a href="https://twitter.com/hashtag/COVID19?src=hash&amp;ref_src=twsrc%5Etfw">#COVID19</a><a href="https://twitter.com/hashtag/LargestVaccineDrive?src=hash&amp;ref_src=twsrc%5Etfw">#LargestVaccineDrive</a> <a href="https://twitter.com/PMOIndia?ref_src=twsrc%5Etfw"><span class="citation">@PMOIndia</span></a> <a href="https://t.co/Z5KIZR3coW">pic.twitter.com/Z5KIZR3coW</a></p>
+</p>
+<p>— Dr Harsh Vardhan (<span class="citation">@drharshvardhan</span>) <a href="https://twitter.com/drharshvardhan/status/1359026201243783172?ref_src=twsrc%5Etfw">February 9, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p><a href="https://twitter.com/hashtag/LargestVaccineDrive?src=hash&amp;ref_src=twsrc%5Etfw">#LargestVaccineDrive</a> <br><br>🔷 India becomes the Fastest to reach 6 million vaccinations<br><br>🔶 More than 60 lakh Beneficiaries Vaccinated<br><br>🔷 2,23,298 beneficiaries vaccinated till 6 pm today<a href="https://twitter.com/PMOIndia?ref_src=twsrc%5Etfw"><span class="citation">@PMOIndia</span></a> <a href="https://twitter.com/hashtag/Unite2FightCorona?src=hash&amp;ref_src=twsrc%5Etfw">#Unite2FightCorona</a> <a href="https://t.co/tUqNJM0jWQ">pic.twitter.com/tUqNJM0jWQ</a></p>
+</p>
+<p>— Dr Harsh Vardhan (<span class="citation">@drharshvardhan</span>) <a href="https://twitter.com/drharshvardhan/status/1358830829011537922?ref_src=twsrc%5Etfw">February 8, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>It was a great gesture by PM Modi to be second in line and have our health workers and doctors be vaccinated first. It is a shame that the Opposition has made this an issue.<br><br>My views on <a href="https://twitter.com/TimesNow?ref_src=twsrc%5Etfw"><span class="citation">@TimesNow</span></a> with <a href="https://twitter.com/RShivshankar?ref_src=twsrc%5Etfw"><span class="citation">@RShivshankar</span></a>.<a href="https://twitter.com/hashtag/ModiSnubsVaccineDoubters?src=hash&amp;ref_src=twsrc%5Etfw">#ModiSnubsVaccineDoubters</a> <a href="https://t.co/L16wCJ07qJ">pic.twitter.com/L16wCJ07qJ</a></p>
+</p>
+<p>— Anand Ranganathan (<span class="citation">@ARanganathan72</span>) <a href="https://twitter.com/ARanganathan72/status/1352637864610304001?ref_src=twsrc%5Etfw">January 22, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>“It is advised to take a vaccine even after COVID-19 infection, as development of immunity or period of protection after COVID-19 vaccines is not established. Wait for 4-8 weeks after recovery from COVID symptoms, before vaccination.” – Dr. NK Arora <a href="https://twitter.com/ICMRDELHI?ref_src=twsrc%5Etfw"><span class="citation">@ICMRDELHI</span></a> <a href="https://twitter.com/hashtag/VaccineVarta?src=hash&amp;ref_src=twsrc%5Etfw">#VaccineVarta</a> (3/3)</p>
+</p>
+<p>— Ministry of Health (<span class="citation">@MoHFW_INDIA</span>) <a href="https://twitter.com/MoHFW_INDIA/status/1359101276609335296?ref_src=twsrc%5Etfw">February 9, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>Vaccination of Railway employees is being done in a phased manner.<br><br>Till now, 13,117 Railway health care staff have been vaccinated<a href="https://twitter.com/RailMinIndia?ref_src=twsrc%5Etfw"><span class="citation">@RailMinIndia</span></a> <a href="https://twitter.com/hashtag/ParliamentQuestion?src=hash&amp;ref_src=twsrc%5Etfw">#ParliamentQuestion</a><a href="https://t.co/3himYkDqwK">https://t.co/3himYkDqwK</a></p>
+</p>
+<p>— PIB India (<span class="citation">@PIB_India</span>) <a href="https://twitter.com/PIB_India/status/1359479272201621507?ref_src=twsrc%5Etfw">February 10, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p><a href="https://twitter.com/hashtag/IndiaFightsCorona?src=hash&amp;ref_src=twsrc%5Etfw">#IndiaFightsCorona</a>:<br><br>📍How to reduce Stigma related to <a href="https://twitter.com/hashtag/COVID19?src=hash&amp;ref_src=twsrc%5Etfw">#COVID19</a> ❓❓❓<br><br>↗️ Share positive stories of those recovered<br>↗️ Celebrate recovered persons as Winners<br>↗️ Support and cooperate with the family of affected person<a href="https://twitter.com/hashtag/Unite2FightCorona?src=hash&amp;ref_src=twsrc%5Etfw">#Unite2FightCorona</a> <a href="https://twitter.com/hashtag/StaySafe?src=hash&amp;ref_src=twsrc%5Etfw">#StaySafe</a> <a href="https://twitter.com/hashtag/IndiaWillWin?src=hash&amp;ref_src=twsrc%5Etfw">#IndiaWillWin</a> <a href="https://t.co/36ba7wGXkb">pic.twitter.com/36ba7wGXkb</a></p>
+</p>
+<p>— #IndiaFightsCorona (<span class="citation">@COVIDNewsByMIB</span>) <a href="https://twitter.com/COVIDNewsByMIB/status/1359848016627204101?ref_src=twsrc%5Etfw">February 11, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p><a href="https://twitter.com/hashtag/IndiaFightsCorona?src=hash&amp;ref_src=twsrc%5Etfw">#IndiaFightsCorona</a>: <br><br>📍Importance of doing physical activity 👇<br><br>▶️benefits body and mind<br>▶️reduces high blood pressure.<br>▶️reduces risk of heart disease, diabetes which may increase chances of <a href="https://twitter.com/hashtag/COVID19?src=hash&amp;ref_src=twsrc%5Etfw">#COVID19</a> infection.<br>▶️improves mental well-being. <a href="https://twitter.com/hashtag/StayHealthy?src=hash&amp;ref_src=twsrc%5Etfw">#StayHealthy</a> <a href="https://twitter.com/hashtag/StayFit?src=hash&amp;ref_src=twsrc%5Etfw">#StayFit</a> <a href="https://t.co/i9TDHF5LiD">pic.twitter.com/i9TDHF5LiD</a></p>
+</p>
+<p>— #IndiaFightsCorona (<span class="citation">@COVIDNewsByMIB</span>) <a href="https://twitter.com/COVIDNewsByMIB/status/1359864098670870528?ref_src=twsrc%5Etfw">February 11, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>India will begin a historic Covid vaccine rollout<a href="https://t.co/TafFyDHog8">https://t.co/TafFyDHog8</a></p>
+</p>
+<p>— Rajat Sharma (<span class="citation">@RajatSharmaLive</span>) <a href="https://twitter.com/RajatSharmaLive/status/1346771418898264065?ref_src=twsrc%5Etfw">January 6, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>Approved Covaxin vaccine has efficacy, it’s safe, readily available, it’s affordable and easily transportable. Thank you <a href="https://twitter.com/narendramodi?ref_src=twsrc%5Etfw"><span class="citation">@narendramodi</span></a> for encouraging scientists to make this possible. Please do not circulate unsubstantiated rumours about vaccine on social media.</p>
+</p>
+<p>— Rajat Sharma (<span class="citation">@RajatSharmaLive</span>) <a href="https://twitter.com/RajatSharmaLive/status/1345751528745828353?ref_src=twsrc%5Etfw">January 3, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>Wishing all of India the very best for <a href="https://twitter.com/hashtag/LargestVaccineDrive?src=hash&amp;ref_src=twsrc%5Etfw">#LargestVaccineDrive</a>.<a href="https://twitter.com/PMOIndia?ref_src=twsrc%5Etfw"><span class="citation">@PMOIndia</span></a> <a href="https://twitter.com/CMOMaharashtra?ref_src=twsrc%5Etfw"><span class="citation">@CMOMaharashtra</span></a> <a href="https://twitter.com/MoHFW_INDIA?ref_src=twsrc%5Etfw"><span class="citation">@MoHFW_INDIA</span></a> <a href="https://t.co/r4k3SVArDs">pic.twitter.com/r4k3SVArDs</a></p>
+</p>
+<p>— Sachin Tendulkar (<span class="citation">@sachin_rt</span>) <a href="https://twitter.com/sachin_rt/status/1350334812167446532?ref_src=twsrc%5Etfw">January 16, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="und" dir="ltr">
+<p>सर्वे भवन्तु सुखिनः सर्वे सन्तु निरामया - May all be free from diseases.<a href="https://twitter.com/drharshvardhan?ref_src=twsrc%5Etfw"><span class="citation">@drharshvardhan</span></a> <br>Good to see every box of Bharat Biotech’s COVID19 vaccine stamped with this most powerful, positive vedic mantra🇮🇳<a href="https://twitter.com/narendramodi?ref_src=twsrc%5Etfw"><span class="citation">@narendramodi</span></a> <br>Jai Hind🇮🇳 <a href="https://t.co/ldM4fiQaeC">pic.twitter.com/ldM4fiQaeC</a></p>
+</p>
+<p>— Suresh Raina🇮🇳 (<span class="citation">@ImRaina</span>) <a href="https://twitter.com/ImRaina/status/1349326869984813056?ref_src=twsrc%5Etfw">January 13, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+<blockquote class="twitter-tweet">
+<p lang="en" dir="ltr">
+<p>T 3785 - <br>It was a proud moment when we made India polio free ; it shall be just as proud a moment when we make India COVID-19 free <a href="https://twitter.com/hashtag/LargestVaccineDrive?src=hash&amp;ref_src=twsrc%5Etfw">#LargestVaccineDrive</a><br> <a href="https://twitter.com/MoHFW_INDIA?ref_src=twsrc%5Etfw"><span class="citation">@MoHFW_India</span></a> <a href="https://twitter.com/UNICEFIndia?ref_src=twsrc%5Etfw"><span class="citation">@UNICEFIndia</span></a> <a href="https://twitter.com/hashtag/largestVaccinationdrive?src=hash&amp;ref_src=twsrc%5Etfw">#largestVaccinationdrive</a> <br>JAI HIND 🇮🇳🇮🇳🇮🇳🇮🇳🇮🇳🇮🇳🇮🇳</p>
+</p>
+<p>— Amitabh Bachchan (<span class="citation">@SrBachchan</span>) <a href="https://twitter.com/SrBachchan/status/1350661503779627008?ref_src=twsrc%5Etfw">January 17, 2021</a></p>
+</blockquote>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</div>
+
+<hr>
+
+<p>Last updated: 11th Feb 2021</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
